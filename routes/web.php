@@ -1,7 +1,9 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\PembelajaranController;
+Route::get('/', function () {
+    return view('welcome');
+});
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -13,6 +15,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Contoh penggunaan rute-rute dari PembelajaranController
+Route::get('/pembelajaran', [PembelajaranController::class, 'index']);
+Route::get('/pembelajaran/create', [PembelajaranController::class, 'create']);
+Route::post('/pembelajaran', [PembelajaranController::class, 'store']);
+Route::get('/pembelajaran/{id}/edit', [PembelajaranController::class, 'edit']);
+Route::put('/pembelajaran/{id}', [PembelajaranController::class, 'update']);
+Route::delete('/pembelajaran/{id}', [PembelajaranController::class, 'destroy'])
+;
