@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pembelajaran;
 use Illuminate\Http\Request;
-use App\Models\Pembelajaran; // Pastikan untuk memasukkan model Pembelajaran
+use Illuminate\Support\Facades\Redirect;
 
 class PembelajaranController extends Controller
 {
@@ -23,8 +24,19 @@ class PembelajaranController extends Controller
     // Menyimpan data dari form input ke database
     public function store(Request $request)
     {
-        Pembelajaran::create($request->all());
-    return Redirect::to('/pembelajaran')->with('success', 'Data berhasil disimpan');
+        // Validasi data yang diterima dari form
+        $validatedData = $request->validate([
+            'semester' => 'required',
+            'mata_kuliah' => 'required',
+            'materi' => 'required',
+            'sistem' => 'required',
+        ]);
+
+        // Simpan data ke dalam database menggunakan model Pembelajaran
+        Pembelajaran::create($validatedData);
+
+        // Redirect kembali ke halaman index atau halaman lain yang diinginkan
+        return redirect('/pembelajaran')->with('success', 'Data berhasil ditambahkan.');
     }
 
     // Menampilkan form edit data
@@ -38,14 +50,14 @@ class PembelajaranController extends Controller
     public function update(Request $request, $id)
     {
         Pembelajaran::find($id)->update($request->all());
-    return Redirect::to('/pembelajaran')->with('success', 'Data berhasil diperbarui');
+        return Redirect::to('/pembelajaran')->with('success', 'Data berhasil diperbarui');
     }
 
     // Menghapus data dari database
     public function destroy($id)
     {
         Pembelajaran::find($id)->delete();
-    return Redirect::to('/pembelajaran')->with('success', 'Data berhasil dihapus');
+        return Redirect::to('/pembelajaran')->with('success', 'Data berhasil dihapus');
     }
 }
 
